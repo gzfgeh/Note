@@ -46,34 +46,35 @@ public class DateTimeSelectorDialogBuilder extends CustomDialog{
 		this.setCustomDialogWindow(800, LayoutParams.WRAP_CONTENT)
 			.setCustomDialogTitleLeftVisibility(View.VISIBLE)
 			.setCustomDialogTitleLeftText("确定")
+			.setCustomDialogTitleLeftTextClick(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					if (null != onSureClickListener)
+						onSureClickListener.setOnSureClickListener(timeSelectWheelView);
+					dismiss();
+				}
+			})
 			.setCustomDialogTitleCenterTextColor("#000000")
 			.setCustomDialogTitleLeftTextColor("#4169e1")
 			.setCustomDialogTitleRightVisibility(View.VISIBLE)
 			.setCustomDialogTitleCenterText("选择")
 			.setCustomDialogTitleRightText("取消")
+			.setCustomDialogTitleRightTextClick(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					dismiss();
+				}
+			})
 			.setCustomDialogTitleRightTextColor("#4169e1")
 			.setCustomDialogCenterMessageDefaultVisibility(View.GONE)
 			.setCustomDialogMsgVisibility(View.VISIBLE)
 			.setCustomDialogMessageView(dateTimeSelectorDialogLayout, context)
 			.setCustomDialogBottomLeftBtnVisibility(View.GONE)
 			.setCustomDialogBottomRightBtnVisibility(View.GONE);
-	}
-	
-	public void OnCustomDialogClick(View view) {
-		// TODO Auto-generated method stub
-		switch (view.getId()) {
-		case R.id.custom_dialog_title_left_text:
-			if (null != onSureClickListener)
-				onSureClickListener.setOnSureClickListener(timeSelectWheelView);
-			
-			break;
-		case R.id.cutsom_dialog_title_right_text:
-			
-			break;
-		default:
-			break;
-		}
-		this.dismiss();
 	}
 
 	@SuppressWarnings("static-access")

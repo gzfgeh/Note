@@ -24,6 +24,7 @@ public class CustomDialog extends Dialog implements DialogInterface{
 	
 	private View customDialogView;
 	private LinearLayout customDialogParentPanel;
+	@SuppressWarnings("unused")
 	private RelativeLayout customDialogMain;
 	private LinearLayout customDialogTopPanel;
 	private FrameLayout customDialogMsgView;
@@ -55,6 +56,7 @@ public class CustomDialog extends Dialog implements DialogInterface{
 	private final String defDialogColor = "#FFFFFFFF";
 	private int windowWidth = 0;
 	private int windowHeight = 0;
+	@SuppressWarnings("unused")
 	private boolean isDisappear = true;
 	
 	public CustomDialog(Context context){
@@ -159,15 +161,15 @@ public class CustomDialog extends Dialog implements DialogInterface{
 		customDialogBottomRightBtn = (Button) customDialogView.
 				findViewById(R.id.custom_dialog_bottom_right_btn);
 		
-		customDialogMain.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View view) {
-				// TODO Auto-generated method stub
-				if(isDisappear)
-					dismiss();
-			}
-		});
+//		customDialogMain.setOnClickListener(new View.OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View view) {
+//				// TODO Auto-generated method stub
+//				if(isDisappear)
+//					dismiss();
+//			}
+//		});
 		
 		setContentView(customDialogView);
 		toDefault();
@@ -297,8 +299,8 @@ public class CustomDialog extends Dialog implements DialogInterface{
 		return this;
 	}
 	
-	public CustomDialog setCustomDialogTitleLeftClick(View.OnClickListener click){
-		customDialogTitleLeft.setOnClickListener(click);
+	public CustomDialog setCustomDialogTitleLeftTextClick(View.OnClickListener click){
+		customDialogTitleLeftText.setOnClickListener(click);
 		return this;
 	}
 	
@@ -332,8 +334,8 @@ public class CustomDialog extends Dialog implements DialogInterface{
 		return this;
 	}
 	
-	public CustomDialog setCustomDialogTitleRightClick(View.OnClickListener click){
-		customDialogTitleRight.setOnClickListener(click);
+	public CustomDialog setCustomDialogTitleRightTextClick(View.OnClickListener click){
+		customDialogTitleRightText.setOnClickListener(click);
 		return this;
 	}
 	
@@ -376,7 +378,6 @@ public class CustomDialog extends Dialog implements DialogInterface{
 		customDialogBottomRightBtn.setOnClickListener(click);
 		return this;
 	}
-	
 	
 	public CustomDialog setCustomDialogMessageView(int resource, Context context){
 		View view = View.inflate(context, resource, null);
@@ -433,5 +434,5 @@ public class CustomDialog extends Dialog implements DialogInterface{
 	public FrameLayout getCustomDialogLayout(){
 		return customDialogMsgView;
 	}
-
+	
 }

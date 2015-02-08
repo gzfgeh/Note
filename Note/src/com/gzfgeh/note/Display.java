@@ -15,8 +15,6 @@ import com.gzfgeh.data.ListItemData;
 import com.gzfgeh.data.OperationSQLiteItem;
 import com.gzfgeh.dialog.DateTimeSelectorDialogBuilder;
 import com.gzfgeh.dialog.DateTimeSelectorDialogBuilder.OnSureClickListener;
-import com.gzfgeh.service.PullLayout;
-import com.gzfgeh.service.PullLayout.OnPullLayoutListener;
 import com.gzfgeh.service.SharedPreferencesData;
 import com.gzfgeh.service.help;
 import com.gzfgeh.wheelview.TimeSelectWheelView;
@@ -24,7 +22,6 @@ import com.nineoldandroids.view.ViewHelper;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -63,7 +60,7 @@ import android.widget.Toast;
 	private final static String ALBUM_PATH=Environment.getExternalStorageDirectory()+File.separator+NOTE+File.separator;
 	
 	private static final int TAB = 0;
-	private Context context;
+	//private Context context;
 	private ImageButton titleSetView;
 	@SuppressWarnings("unused")
 	private ImageButton titleDisplayMenu;
@@ -90,7 +87,7 @@ import android.widget.Toast;
 	private DrawerLayout drawerLayout;
 	private DateTimeSelectorDialogBuilder dateTimeSelectorDialogBuilder;
 	//PullLayout
-	private PullLayout pullLayout;
+	//private PullLayout pullLayout;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -186,7 +183,7 @@ import android.widget.Toast;
 				switch (index) {
 				case 0:
 					if (null == dateTimeSelectorDialogBuilder)
-						dateTimeSelectorDialogBuilder = new DateTimeSelectorDialogBuilder(Display.this);
+						dateTimeSelectorDialogBuilder = new DateTimeSelectorDialogBuilder(Display.this, R.style.custom_dialog);
 					
 					dateTimeSelectorDialogBuilder.show();
 					dateTimeSelectorDialogBuilder.setOnSureClickListener(new OnSureClickListener() {
@@ -194,7 +191,7 @@ import android.widget.Toast;
 						@Override
 						public void setOnSureClickListener(TimeSelectWheelView wheelView) {
 							// TODO Auto-generated method stub
-							Toast.makeText(Display.this, "ddd", Toast.LENGTH_SHORT).show();
+							Toast.makeText(Display.this, wheelView.getSelectTime(), Toast.LENGTH_SHORT).show();
 						}
 					});
 					break;

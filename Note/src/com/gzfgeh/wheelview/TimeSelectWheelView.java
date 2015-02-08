@@ -97,6 +97,12 @@ public class TimeSelectWheelView extends RelativeLayout implements OnWheelChange
 		wheelMinute = (WheelView) findViewById(R.id.time_select_wheel_minute);
 		wheelSecond = (WheelView) findViewById(R.id.time_select_wheel_second);
 		
+		wheelYear.setSoundEffectsEnabled(true);
+		wheelMonth.setSoundEffectsEnabled(true);
+		wheelDay.setSoundEffectsEnabled(true);
+		wheelHour.setSoundEffectsEnabled(true);
+		wheelMinute.setSoundEffectsEnabled(true);
+		wheelSecond.setSoundEffectsEnabled(true);
 		
 		wheelYear.addChangingListener(this);
 		wheelMonth.addChangingListener(this);
@@ -216,16 +222,13 @@ public class TimeSelectWheelView extends RelativeLayout implements OnWheelChange
 		wheelDay.setCurrentItem(Integer.valueOf(currentSecond));
 	}
 	
-	public String getSelectDate(){
+	public String getSelectTime(){
 		return titleYearText.getText().toString().trim() + "-" +
 				titleMonthText.getText().toString().trim() + "-" +
-				 titleDayText.getText().toString().trim();
-	}
-	
-	public String getSelectTime(){
-		return displayTime(titleHourText.getText().toString().trim()) + ":" +
-				displayTime(titleMinuteText.getText().toString().trim()) + ":" +
-				 displayTime(titleSecondText.getText().toString().trim());
+				 titleDayText.getText().toString().trim() + "-" +
+				  titleHourText.getText().toString().trim() + "-" + 
+				   titleMinuteText.getText().toString().trim() + "-" +
+				    titleSecondText.getText().toString().trim();
 	}
 	
 	public void setTitleClick(OnClickListener listener){

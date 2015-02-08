@@ -73,7 +73,6 @@ https://github.com/android/platform_frameworks_base/blob/master/core/res/res/lay
                         android:text="确定"
                         android:clickable="true"
                         android:focusable="true"
-                        android:onClick="OnCustomDialogClick"
                         android:visibility="visible" />
                 </FrameLayout>
 				
@@ -91,6 +90,7 @@ https://github.com/android/platform_frameworks_base/blob/master/core/res/res/lay
                     
                     <TextView
 	                    android:id="@+id/custom_dialog_title_center_text"
+	                    android:text="选择"
 	                    android:textSize="22sp"
 	                    android:textColor="#000000"
 	                    android:layout_width="wrap_content"
@@ -127,7 +127,6 @@ https://github.com/android/platform_frameworks_base/blob/master/core/res/res/lay
                         android:text="取消"
 	                    android:clickable="true"
 	                    android:focusable="true"
-	                    android:onClick="OnCustomDialogClick"
                         android:visibility="visible" />
                 </FrameLayout>
 
