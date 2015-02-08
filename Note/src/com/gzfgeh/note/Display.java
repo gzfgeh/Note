@@ -15,6 +15,8 @@ import com.gzfgeh.data.ListItemData;
 import com.gzfgeh.data.OperationSQLiteItem;
 import com.gzfgeh.dialog.DateTimeSelectorDialogBuilder;
 import com.gzfgeh.dialog.DateTimeSelectorDialogBuilder.OnSureClickListener;
+import com.gzfgeh.service.PullLayout;
+import com.gzfgeh.service.PullLayout.OnPullLayoutListener;
 import com.gzfgeh.service.SharedPreferencesData;
 import com.gzfgeh.service.help;
 import com.gzfgeh.wheelview.TimeSelectWheelView;
@@ -87,7 +89,8 @@ import android.widget.Toast;
 	//²à»¬  
 	private DrawerLayout drawerLayout;
 	private DateTimeSelectorDialogBuilder dateTimeSelectorDialogBuilder;
-	
+	//PullLayout
+	private PullLayout pullLayout;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -222,6 +225,34 @@ import android.widget.Toast;
         //titleAddView = (RelativeLayout) findViewById(R.id.addItem);
         
         titleDisplayMenu = (ImageButton) findViewById(R.id.right_btn);
+        
+        pullLayout = new PullLayout(getApplicationContext());
+        pullLayout.setOnPullLayoutListener(new OnPullLayoutListener() {
+			
+			@Override
+			public void setOnPullLayoutListener() {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				
+				switch (tabs.getCurrentTab()) {
+				case TAB:
+					intent = new Intent(Display.this,RecordText.class);
+					break;
+				case TAB + 1:
+					intent = new Intent(Display.this,RecordVoice.class);
+					break;
+				case TAB + 2:
+					intent = new Intent(Display.this,RecordPicture.class);
+					break;
+				case TAB + 3:
+					intent = new Intent(Display.this,RecordVideos.class);
+					break;
+				default:
+					break;
+				}
+				startActivity(intent);
+			}
+		});
 	}
 
 //	private void setListViewHeightBasedOnChildren(ListView listView) {

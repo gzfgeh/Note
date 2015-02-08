@@ -1,22 +1,21 @@
 package com.gzfgeh.service;
 
 import com.gzfgeh.note.R;
-import com.gzfgeh.swipemenulistview.SwipeMenuListView;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.animation.Animator.AnimatorListener;
 import com.nineoldandroids.view.ViewHelper;
 
+import android.R.integer;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.WindowManager;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -25,8 +24,10 @@ import android.widget.TextView;
 
 public class PullLayout extends ScrollView {
 	private ImageView pullTop;
-	private LinearLayout fillContent;
+	private LinearLayout fillContentText;
 	private LinearLayout fillContentVoice;
+	private LinearLayout fillContentPhoto;
+	private LinearLayout fillContentMoive;
 	private TextView tv;
 	
 	private int range;		//隐藏的高度
@@ -37,7 +38,10 @@ public class PullLayout extends ScrollView {
 	private ObjectAnimator objectAnimator;
 	private float downY;
 	private float newY;
+	private float mDownY;
+	private float mUpY;
 	private int scanHeigth, scanWidth;
+	private static OnPullLayoutListener onPullLayoutListener;
 	
 	public PullLayout(Context context){
 		this(context,null);
@@ -47,6 +51,7 @@ public class PullLayout extends ScrollView {
 		this(context,attrs,0);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public PullLayout(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		// TODO Auto-generated constructor stub
@@ -60,8 +65,10 @@ public class PullLayout extends ScrollView {
 		// TODO Auto-generated method stub
 		super.onFinishInflate();
 		setVerticalScrollBarEnabled(false);
-		fillContent = (LinearLayout) findViewById(R.id.text);
-		fillContentVoice = (LinearLayout) findViewById(R.id.voice);
+		fillContentText = (LinearLayout) findViewById(R.id.text);
+		fillContentVoice = (LinearLayout) findViewById(R.id.sounds);
+		fillContentPhoto = (LinearLayout) findViewById(R.id.pic);
+		fillContentMoive = (LinearLayout) findViewById(R.id.movie);
 		
 		tv = (TextView) findViewById(R.id.tv);
 		
@@ -86,13 +93,17 @@ public class PullLayout extends ScrollView {
                 tv.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 tvHeight = tv.getHeight();
                 tvWidth = tv.getWidth();
-                ViewHelper.setTranslationY(fillContent, tvHeight);
+                ViewHelper.setTranslationY(fillContentText, tvHeight);
                 ViewHelper.setTranslationY(fillContentVoice, tvHeight);
+                ViewHelper.setTranslationY(fillContentPhoto, tvHeight);
+                ViewHelper.setTranslationY(fillContentMoive, tvHeight);
             }
         });
 		
-		fillContent.setLayoutParams(new LayoutParams(scanWidth, scanHeigth-60-250-50));
+		fillContentText.setLayoutParams(new LayoutParams(scanWidth, scanHeigth-60-250-50));
 		fillContentVoice.setLayoutParams(new LayoutParams(scanWidth, scanHeigth-60-250-50));
+		fillContentPhoto.setLayoutParams(new LayoutParams(scanWidth, scanHeigth-60-250-50));
+		fillContentMoive.setLayoutParams(new LayoutParams(scanWidth, scanHeigth-60-250-50));
 	}
 	
 	
@@ -104,6 +115,7 @@ public class PullLayout extends ScrollView {
 			isCancleTouch = false;
 			isTouchRunning = true;
 			downY = ev.getY();
+			mDownY = downY;
 			break;
 		}
 		return super.onInterceptTouchEvent(ev);
@@ -140,15 +152,22 @@ public class PullLayout extends ScrollView {
                 }
                 break;
             case MotionEvent.ACTION_UP:
+            	mUpY = ev.getY();
                 isTouchRunning = false;
-                if (getScrollY() < range) {
-                    if (newY != 0) {
-                        reset();
-                    } else {
-                        toggle();
-                    }
-                    return true;
-                }
+                if (Math.abs(mUpY - mDownY) > 100)
+	                if (getScrollY() < range) {
+	                    if (newY != 0) {
+	                        reset();
+	                        if ((null != onPullLayoutListener) && (status == Status.Open))
+	                        	onPullLayoutListener.setOnPullLayoutListener();
+	                    } else {
+	                    	if ((mUpY - mDownY < range/4) && (status == Status.Close))
+	                    		reset();
+	                    	else
+	                    		toggle();
+	                    }
+	                    return true;
+	                }
                 break;
         }
         return super.onTouchEvent(ev);
@@ -169,7 +188,6 @@ public class PullLayout extends ScrollView {
         }
 	}
 
-	@SuppressWarnings("unused")
 	private Integer evaluate(float fraction, Object startValue, Integer endValue) {
         int startInt = (Integer) startValue;
         int startA = (startInt >> 24) & 0xff;
@@ -197,13 +215,15 @@ public class PullLayout extends ScrollView {
 	private void animateScroll(int t) {
         float percent = (float) t / range;
         ViewHelper.setTranslationY(pullTop, t);
-        ViewHelper.setTranslationY(fillContent, tvHeight * percent);
+        ViewHelper.setTranslationY(fillContentText, tvHeight * percent);
         ViewHelper.setTranslationY(fillContentVoice, tvHeight * percent);
+        ViewHelper.setTranslationY(fillContentPhoto, tvHeight * percent);
+        ViewHelper.setTranslationY(fillContentMoive, tvHeight * percent);
         ViewHelper.setScaleX(tv, 2 - percent);
         ViewHelper.setScaleY(tv, 2 - percent);
-        ViewHelper.setTranslationX(tv, tvWidth * (1 - percent) / 2f);
+        //ViewHelper.setTranslationX(tv, tvWidth * (1 - percent) / 2f);
         ViewHelper.setTranslationY(tv, t + tvHeight * (1 - percent) / 2f);
-        tv.setTextColor(evaluate(percent, Color.BLUE, Color.WHITE));
+        tv.setTextColor(evaluate(percent, Color.WHITE, Color.BLUE));
     }
 	
 	private void animatePull(int t) {
@@ -212,7 +232,7 @@ public class PullLayout extends ScrollView {
         float percent = (float) t / range;
         ViewHelper.setScaleX(tv, 2 - percent);
         ViewHelper.setScaleY(tv, 2 - percent);
-        ViewHelper.setTranslationX(tv, tvWidth * (1 - percent) / 2f);
+        //ViewHelper.setTranslationX(tv, tvWidth * (1 - percent) / 2f);
     }
 
 	private void toggle() {
@@ -224,7 +244,7 @@ public class PullLayout extends ScrollView {
         }
 	}
 	
-	private Status status;
+	private Status status = Status.Close;
 
     public enum Status {
         Open, Close;
@@ -272,6 +292,7 @@ public class PullLayout extends ScrollView {
         });
         objectAnimator.setDuration(250);
         objectAnimator.start();
+        tv.setText("下拉添加");
     }
 
     public void open() {
@@ -303,6 +324,14 @@ public class PullLayout extends ScrollView {
         });
         objectAnimator.setDuration(400);
         objectAnimator.start();
+        tv.setText("继续下拉");
     }
 	
+    public void setOnPullLayoutListener(OnPullLayoutListener onPullLayoutListener){
+    	this.onPullLayoutListener = onPullLayoutListener;
+    }
+    
+    public interface OnPullLayoutListener {
+    	public void setOnPullLayoutListener();
+    }
 }
