@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/all_content">
+    
+	<RelativeLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="50dip"
+	    android:background="@drawable/title_background"
+	    android:id="@+id/titlebar"
+	    android:layout_alignParentTop="true"
+	    android:orientation="horizontal">
+	    
+	    <ImageButton 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/back"
+	        android:layout_alignParentLeft="true"
+	        android:layout_marginLeft="15dp"
+	        android:id="@+id/left_btn"
+	        android:layout_centerVertical="true"
+	        android:onClick="onClickTitleBtn"/>
+	    
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/titlebar_text"
+	        style="@style/normalText"
+	        android:text="APP"
+	        android:layout_centerInParent="true"/>
+	    
+	    <ImageButton 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_marginRight="15dp"
+	        android:background="@drawable/save"
+	        android:id="@+id/right_btn"
+	        android:visibility="gone"
+	        android:layout_centerVertical="true"
+	        android:onClick="onClickTitleBtn"/>
+	    
+	</RelativeLayout>
+	
+	<RelativeLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:orientation="vertical"
+	    android:background="#FFFFFF"
+	    android:layout_below="@id/titlebar">
+	    
+	    <ImageView
+	       android:layout_width="wrap_content"
+	       android:layout_height="wrap_content"
+	       android:layout_centerHorizontal="true"
+	       android:layout_alignParentTop="true"
+	       android:id="@+id/ok"
+	       android:background="@drawable/ok"
+	       android:visibility="gone"/>
+	    
+	    <RelativeLayout
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		    android:id="@+id/content"
+		    android:layout_below="@id/ok"
+		    android:orientation="vertical"/>
+	    
+	</RelativeLayout>
+	
+</RelativeLayout>

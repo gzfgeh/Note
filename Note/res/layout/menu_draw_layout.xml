@@ -1,0 +1,223 @@
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout_id"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/menu_bg" >
+	
+    <RelativeLayout 
+  		    android:layout_width="match_parent"
+  		    android:layout_height="match_parent">
+  		    
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/title"
+            android:layout_alignParentTop="true">
+            
+  		    <RelativeLayout 
+			    android:layout_width="fill_parent"
+			    android:layout_height="50dp"
+			    android:id="@+id/titlebar"
+			    android:background="@drawable/title_background"
+			    android:orientation="horizontal">
+	    
+				    <ImageButton 
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:background="@drawable/set"
+				        android:layout_alignParentLeft="true"
+				        android:layout_marginLeft="15dp"
+				        android:id="@+id/left_btn"
+				        android:layout_centerVertical="true"
+				        android:onClick="onClickTitleBtn"/>
+				    
+				    <TextView 
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:id="@+id/titlebar_text"
+				        style="@style/normalText"
+				        android:layout_centerInParent="true"/>
+				    
+				    <ImageButton 
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_alignParentRight="true"
+				        android:layout_marginRight="5dp"
+				        android:background="@drawable/right_menu"
+				        android:id="@+id/right_btn"
+				        android:layout_centerVertical="true"
+				        android:onClick="onClickTitleBtn"/>
+				    
+				</RelativeLayout>
+   	       <!--  
+  		    <RelativeLayout 
+  		        android:layout_width="fill_parent"
+	  		    android:layout_height="80dp"
+	  		    android:id="@+id/addItem"
+	  		    android:clickable="true"
+	  		    android:onClick="onClickTitleBtn"
+	  		    android:background="@drawable/main_background">
+  		    
+  		        <ImageButton
+	  		        android:layout_width="wrap_content"
+	  		        android:layout_height="wrap_content"
+	  		        android:background="@drawable/add"/>
+  		        
+				<TextView 
+				    android:layout_width="wrap_content"
+	  		        android:layout_height="wrap_content"
+	  		        android:id="@+id/add_text"
+	  		        android:text="下拉 ，记录下自己的心声"
+	  		        android:textSize="20sp"
+	  		        android:layout_alignParentRight="true"
+	  		        android:layout_centerVertical="true"/>
+  		    </RelativeLayout>
+  		    --> 
+		</LinearLayout>
+		
+		  		<TabHost 
+			    android:layout_width="match_parent"
+			    android:layout_height="match_parent"
+			    android:id="@+id/tabhost"
+			    android:layout_below="@id/title">
+			    
+			    <RelativeLayout 
+			        android:layout_width="match_parent"
+			        android:layout_height="match_parent"
+			        android:orientation="vertical">
+			        
+			        <TabWidget 
+			            android:id="@android:id/tabs"
+			            android:layout_width="fill_parent"
+			            android:layout_height="50dp"
+			            android:layout_alignParentBottom="true">
+			        </TabWidget>
+			        
+			        <com.gzfgeh.service.PullLayout 
+			            android:layout_width="match_parent"
+			        	android:layout_height="match_parent"
+			        	android:layout_above="@android:id/tabs"
+			        	>
+			            
+			            <RelativeLayout 
+			                android:layout_width="match_parent"
+			                android:layout_height="match_parent">
+			                
+			                <ImageView
+				                android:id="@+id/pull_top"
+				                android:layout_width="match_parent"
+				                android:layout_height="match_parent"
+				                android:scaleType="centerCrop"
+				                android:src="@drawable/top_background" />
+							            
+			        <FrameLayout 
+			            android:id="@android:id/tabcontent"
+			            android:layout_width="match_parent"
+			            android:layout_height="match_parent"
+			            android:layout_below="@id/pull_top"
+			            android:background="@drawable/main_background">
+			            
+			            <LinearLayout 
+			                android:layout_width="fill_parent"
+			                android:layout_height="fill_parent"
+			                android:id="@+id/text">
+			                
+			                <com.gzfgeh.swipemenulistview.SwipeMenuListView
+							    android:id="@+id/textlistview"
+							    android:layout_width="match_parent"
+							    android:layout_height="match_parent"
+							    android:listSelector="@android:color/transparent"
+							    android:cacheColorHint="@android:color/transparent"
+							    android:divider="#FFFFFF"
+							    android:dividerHeight="1dp">
+			    			</com.gzfgeh.swipemenulistview.SwipeMenuListView>
+			            </LinearLayout>
+			            
+			             
+			             <LinearLayout 
+			                android:layout_width="fill_parent"
+			                android:layout_height="fill_parent"
+			                android:id="@+id/sounds">
+			                
+			                 <com.gzfgeh.swipemenulistview.SwipeMenuListView
+							    android:id="@+id/soundslistview"
+							    android:layout_width="match_parent"
+							    android:layout_height="match_parent"
+							    android:listSelector="@android:color/transparent"
+							    android:cacheColorHint="@android:color/transparent">
+			    			</com.gzfgeh.swipemenulistview.SwipeMenuListView>
+			    			
+			            </LinearLayout>
+			            
+			             
+			             <LinearLayout 
+			                android:layout_width="fill_parent"
+			                android:layout_height="fill_parent"
+			                android:id="@+id/pic">
+			                
+			                 <com.gzfgeh.swipemenulistview.SwipeMenuListView
+							    android:id="@+id/piclistview"
+							    android:layout_width="match_parent"
+							    android:layout_height="match_parent"
+							    android:listSelector="@android:color/transparent"
+							    android:cacheColorHint="@android:color/transparent">
+			    			</com.gzfgeh.swipemenulistview.SwipeMenuListView>
+			    			
+			            </LinearLayout>
+			            
+			             
+			             <LinearLayout 
+			                android:layout_width="fill_parent"
+			                android:layout_height="fill_parent"
+			                android:id="@+id/movie">
+			                
+			                <com.gzfgeh.swipemenulistview.SwipeMenuListView
+							    android:id="@+id/movielistview"
+							    android:layout_width="match_parent"
+							    android:layout_height="match_parent"
+							    android:listSelector="@android:color/transparent"
+							    android:cacheColorHint="@android:color/transparent">
+			    			</com.gzfgeh.swipemenulistview.SwipeMenuListView>
+			    			
+			            </LinearLayout>
+			            
+			        </FrameLayout>
+			          <TextView
+			            android:id="@+id/tv"
+			            android:layout_width="match_parent"
+			            android:layout_height="wrap_content"
+			            android:layout_centerHorizontal="true"
+			            android:layout_marginTop="10dp"
+			            android:layout_marginBottom="10dp"
+			            android:text="下拉添加"
+			            android:textColor="#FFFFFF"
+			            android:textSize="25sp" />
+			        
+			        
+			        </RelativeLayout>
+			        </com.gzfgeh.service.PullLayout>
+			        
+			    </RelativeLayout>
+			</TabHost>
+		</RelativeLayout>
+		
+    
+    <fragment
+        android:id="@+id/left_menu_id"
+        android:name="com.gzfgeh.service.LeftMenuFragment"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:tag="LEFT" />
+
+    <fragment
+        android:id="@+id/id_right_menu"
+        android:name="com.gzfgeh.service.RightMenuFragment"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:tag="RIGHT" />
+
+</android.support.v4.widget.DrawerLayout>

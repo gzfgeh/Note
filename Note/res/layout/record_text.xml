@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+    
+    <EditText 
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:id="@+id/text"
+	    android:inputType="textMultiLine"
+	    android:textColorHighlight="#cccccc"
+	    android:textScaleX="1.5"
+	    android:background="@null"
+	    android:cursorVisible="true"
+	    android:scrollbars="vertical"
+	    android:focusable="true"		
+	    android:focusableInTouchMode="true"		
+	    android:clickable="true"
+	    android:gravity="left|top"/>"
+	
+</LinearLayout>

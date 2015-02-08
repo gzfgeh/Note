@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.gzfgeh.note"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="18" />
+	
+    <uses-permission android:name="android.permission.INTERNET" />  
+   <uses-permission android:name="android.permission.READ_PHONE_STATE" />  
+   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />  
+   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />  
+   <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />  
+   <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />  
+   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />  
+   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> 
+   
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.CAMERA"/> 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    
+    <application
+        android:name="com.baidu.frontia.FrontiaApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name" >
+        
+        <uses-library android:name="android.test.runner" />  
+        
+        <activity
+            android:name="com.gzfgeh.note.MainActivity"
+            android:label="@string/app_name"
+        	android:theme="@android:style/Theme.NoTitleBar"
+        	android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+		
+        <activity 
+            android:name=".Loading"
+            android:theme="@android:style/Theme.NoTitleBar"/>
+        
+        <activity 
+            android:name=".Display"
+            android:theme="@style/MyTitleTheme"/>
+        
+        <activity 
+            android:name=".RecordText"
+            android:theme="@style/MyTitleTheme"/>
+        
+        <activity 
+            android:name=".RecordVoice"
+            android:theme="@style/MyTitleTheme"/>
+        
+        <activity 
+            android:name=".RecordPicture"/>
+        
+        <activity 
+            android:name=".RecordVideos"
+            android:theme="@style/MyTitleTheme"/>
+        
+        <activity 
+            android:name="com.gzfgeh.service.help"/>
+        
+        <activity 
+            android:name="com.gzfgeh.service.Videos"
+            android:screenOrientation="landscape"/>
+        
+        <provider 
+            android:name="com.gzfgeh.data.ItemDataProvider" 
+            android:authorities="com.gzfgeh.providers.itemdataprovider"/>
+        
+        <!-- push service start -->
+        <!-- 用于接收系统消息以保证PushService正常运行 -->  
+        <receiver 
+            android:name="com.baidu.android.pushservice.PushServiceReceiver"
+            android:process=":bdservice_v1">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />  
+               <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />  
+               <action android:name="com.baidu.android.pushservice.action.notification.SHOW" />  
+               <action android:name="com.baidu.android.pushservice.action.media.CLICK" />
+            </intent-filter>
+        </receiver>
+        
+        <!-- Push服务接收客户端发送的各种请求 --> 
+        <receiver 
+            android:name="com.baidu.android.pushservice.RegistrationReceiver"
+            android:process=":bdservice_v1">
+            <intent-filter>  
+               <action android:name="com.baidu.android.pushservice.action.METHOD" />  
+               <action android:name="com.baidu.android.pushservice.action.BIND_SYNC" />  
+           </intent-filter>  
+           <intent-filter>  
+               <action android:name="android.intent.action.PACKAGE_REMOVED" />  
+  
+               <data android:scheme="package" />  
+           </intent-filter>  
+        </receiver>
+        
+        
+        <service  
+           android:name="com.baidu.android.pushservice.PushService"  
+           android:exported="true"  
+           android:process=":bdservice_v1" >  
+           <intent-filter>  
+               <action android:name="com.baidu.android.pushservice.action.PUSH_SERVICE" />  
+           </intent-filter>  
+       </service> 
+       
+        <receiver 
+            android:name="com.gzfgeh.service.DataReceiver">
+            <intent-filter>
+                <action android:name="com.baidu.android.pushservice.action.MESSAGE"/>
+                <action android:name="com.baidu.android.pushservice.action.RECEIVE"/>
+                <action android:name="com.baidu.android.pushservice.action.notification.CLICK"/>
+            </intent-filter>
+        </receiver>
+        
+    </application>
+	
+    <instrumentation android:name="android.test.InstrumentationTestRunner"  
+        android:targetPackage="com.gzfgeh.note" android:label="Tests for My App" /> 
+        
+</manifest>

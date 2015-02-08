@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+** Copyright 2010, The Android Open Source Project
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+
+https://github.com/android/platform_frameworks_base/blob/master/core/res/res/layout/alert_dialog_holo.xml
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/custom_dialog_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:id="@+id/custom_dialog_parent_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:clickable="false"
+        android:orientation="vertical"
+        android:visibility="visible" >
+
+        <!-- Dialog的Title -->
+
+        <LinearLayout
+            android:id="@+id/custom_dialog_top_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#22000000"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/custom_dialog_title"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginEnd="16dip"
+                android:layout_marginStart="16dip" >
+
+                <FrameLayout
+                    android:id="@+id/custom_dialog_title_left"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="8dip" >
+
+                    <ImageView
+                        android:id="@+id/custom_dialog_title_left_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerInside"
+                        android:src="@null"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/custom_dialog_title_left_text"
+                        style="?android:attr/textAppearanceMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="取消"
+                        android:visibility="visible" />
+                </FrameLayout>
+				
+                <FrameLayout 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:id="@+id/custom_dialog_title_center">
+                    
+                    <ImageView 
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:id="@+id/custom_dialog_title_center_icon"/>
+                    
+                    <TextView
+	                    android:id="@+id/custom_dialog_title_center_text"
+	                    android:textSize="22sp"
+	                    android:textColor="#000000"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:layout_marginLeft="8dip"
+	                    android:ellipsize="end"
+	                    android:gravity="center"
+	                    android:singleLine="true" />
+                </FrameLayout>
+                
+
+                <FrameLayout
+                    android:id="@+id/cutsom_dialog_title_right"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="8dip" >
+
+                    <ImageView
+                        android:id="@+id/cutsom_dialog_title_right_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerInside"
+                        android:src="@null"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/cutsom_dialog_title_right_text"
+                        style="?android:attr/textAppearanceMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="确定"
+                        android:visibility="visible" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/custom_dialog_title_next_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="8dp"
+                    android:visibility="gone" >
+                </FrameLayout>
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/custom_dialog_title_divider"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#110000"
+                android:visibility="visible" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/custom_dialog_center_msg_default_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/custom_dialog_center_msg_default_text"
+                style="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="Message"
+                android:textIsSelectable="true" />
+        </LinearLayout>
+        
+        
+        <!-- 用户自定义布局摆放位置 -->
+        <FrameLayout
+            android:id="@+id/custom_dialog_msg_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:visibility="visible">
+        </FrameLayout>
+        <!-- 底部按钮 -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/custom_dialog_bottom_left_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:text="OK"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/custom_dialog_bottom_right_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:text="Cancle"
+                android:visibility="visible" />
+        </LinearLayout>
+        
+    </LinearLayout>
+
+</RelativeLayout>
