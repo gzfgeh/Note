@@ -70,7 +70,10 @@ https://github.com/android/platform_frameworks_base/blob/master/core/res/res/lay
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="取消"
+                        android:text="确定"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="OnCustomDialogClick"
                         android:visibility="visible" />
                 </FrameLayout>
 				
@@ -95,7 +98,7 @@ https://github.com/android/platform_frameworks_base/blob/master/core/res/res/lay
 	                    android:layout_marginLeft="8dip"
 	                    android:ellipsize="end"
 	                    android:gravity="center"
-	                    android:singleLine="true" />
+	                    android:singleLine="true"/>
                 </FrameLayout>
                 
 
@@ -121,7 +124,10 @@ https://github.com/android/platform_frameworks_base/blob/master/core/res/res/lay
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="确定"
+                        android:text="取消"
+	                    android:clickable="true"
+	                    android:focusable="true"
+	                    android:onClick="OnCustomDialogClick"
                         android:visibility="visible" />
                 </FrameLayout>
 

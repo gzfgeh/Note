@@ -70,9 +70,9 @@ public class PullLayout extends ScrollView {
 		fillContentPhoto = (LinearLayout) findViewById(R.id.pic);
 		fillContentMoive = (LinearLayout) findViewById(R.id.movie);
 		
-		tv = (TextView) findViewById(R.id.tv);
+		tv = (TextView) findViewById(R.id.about);
 		
-		pullTop = (ImageView) findViewById(R.id.pull_top);
+		pullTop = (ImageView) findViewById(R.id.about);
 		pullTop.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 			
 			@SuppressWarnings("deprecation")

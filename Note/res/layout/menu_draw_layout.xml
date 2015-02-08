@@ -44,8 +44,8 @@
 				        android:layout_width="wrap_content"
 				        android:layout_height="wrap_content"
 				        android:layout_alignParentRight="true"
-				        android:layout_marginRight="5dp"
-				        android:background="@drawable/right_menu"
+				        android:layout_marginRight="15dp"
+				        android:background="@drawable/add"
 				        android:id="@+id/right_btn"
 				        android:layout_centerVertical="true"
 				        android:onClick="onClickTitleBtn"/>
@@ -94,7 +94,7 @@
 			            android:layout_height="50dp"
 			            android:layout_alignParentBottom="true">
 			        </TabWidget>
-			        
+			        <!--  
 			        <com.gzfgeh.service.PullLayout 
 			            android:layout_width="match_parent"
 			        	android:layout_height="match_parent"
@@ -111,12 +111,13 @@
 				                android:layout_height="match_parent"
 				                android:scaleType="centerCrop"
 				                android:src="@drawable/top_background" />
-							            
+							 -->           
 			        <FrameLayout 
 			            android:id="@android:id/tabcontent"
 			            android:layout_width="match_parent"
 			            android:layout_height="match_parent"
-			            android:layout_below="@id/pull_top"
+			            android:padding="10dp"
+			            android:layout_above="@android:id/tabs"
 			            android:background="@drawable/main_background">
 			            
 			            <LinearLayout 
@@ -184,6 +185,7 @@
 			            </LinearLayout>
 			            
 			        </FrameLayout>
+			        <!-- 
 			          <TextView
 			            android:id="@+id/tv"
 			            android:layout_width="match_parent"
@@ -200,7 +202,7 @@
 			        
 			        </RelativeLayout>
 			        </com.gzfgeh.service.PullLayout>
-			        
+			         -->
 			    </RelativeLayout>
 			</TabHost>
 		</RelativeLayout>

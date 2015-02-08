@@ -187,13 +187,14 @@ import android.widget.Toast;
 				case 0:
 					if (null == dateTimeSelectorDialogBuilder)
 						dateTimeSelectorDialogBuilder = new DateTimeSelectorDialogBuilder(Display.this);
+					
 					dateTimeSelectorDialogBuilder.show();
 					dateTimeSelectorDialogBuilder.setOnSureClickListener(new OnSureClickListener() {
 						
 						@Override
 						public void setOnSureClickListener(TimeSelectWheelView wheelView) {
 							// TODO Auto-generated method stub
-							Toast.makeText(context, "ddd", Toast.LENGTH_SHORT).show();
+							Toast.makeText(Display.this, "ddd", Toast.LENGTH_SHORT).show();
 						}
 					});
 					break;
@@ -203,7 +204,7 @@ import android.widget.Toast;
 				default:
 					break;
 				}
-				return false;
+				return true;
 			}
 		});
 
@@ -225,54 +226,7 @@ import android.widget.Toast;
         //titleAddView = (RelativeLayout) findViewById(R.id.addItem);
         
         titleDisplayMenu = (ImageButton) findViewById(R.id.right_btn);
-        
-        pullLayout = new PullLayout(getApplicationContext());
-        pullLayout.setOnPullLayoutListener(new OnPullLayoutListener() {
-			
-			@Override
-			public void setOnPullLayoutListener() {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent();
-				
-				switch (tabs.getCurrentTab()) {
-				case TAB:
-					intent = new Intent(Display.this,RecordText.class);
-					break;
-				case TAB + 1:
-					intent = new Intent(Display.this,RecordVoice.class);
-					break;
-				case TAB + 2:
-					intent = new Intent(Display.this,RecordPicture.class);
-					break;
-				case TAB + 3:
-					intent = new Intent(Display.this,RecordVideos.class);
-					break;
-				default:
-					break;
-				}
-				startActivity(intent);
-			}
-		});
 	}
-
-//	private void setListViewHeightBasedOnChildren(ListView listView) {
-//		// TODO Auto-generated method stub
-//		ListAdapter listAdapt = listView.getAdapter();
-//		if (null == listAdapt)
-//			return;
-//		
-//		int totalHeight = 0;
-//		int num = listAdapt.getCount();
-//		for (int i = 0; i < num; i++) {
-//			View listItem = listAdapt.getView(i, null, listView);
-//			listItem.measure(0, 0);
-//			totalHeight += listItem.getHeight();
-//		}
-//		
-//		ViewGroup.LayoutParams params = listView.getLayoutParams();
-//		params.height = totalHeight+ (listView.getDividerHeight() * (listAdapt.getCount() - 1));
-//		listView.setLayoutParams(params);
-//	}
 
 	private void updateTab(TabHost tabHost) {
 		// TODO Auto-generated method stub
@@ -362,15 +316,7 @@ import android.widget.Toast;
 		
 		switch (v.getId()) {
 		case R.id.right_btn:
-			btnOpenRightMenu();
-			break;
-			
-		case R.id.left_btn:
-			btnOpenLeftMenu();
-			break;
-			
-		case R.id.about:
-			
+			//btnOpenRightMenu();
 			switch (tabs.getCurrentTab()) {
 			case TAB:
 				intent = new Intent(Display.this,RecordText.class);
@@ -388,6 +334,15 @@ import android.widget.Toast;
 				break;
 			}
 			startActivity(intent);
+			break;
+			
+		case R.id.left_btn:
+			btnOpenLeftMenu();
+			break;
+			
+		case R.id.about:
+			
+			
 			break;
 			
 		default:

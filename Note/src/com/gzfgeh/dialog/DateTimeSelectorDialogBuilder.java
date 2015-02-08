@@ -14,7 +14,7 @@ public class DateTimeSelectorDialogBuilder extends CustomDialog{
 	private Context context;
 	private RelativeLayout dateTimeSelectorDialogLayout;
 	private TimeSelectWheelView timeSelectWheelView;
-	private OnSureClickListener onSureClickListener;
+	private static OnSureClickListener onSureClickListener;
 	
 	public interface OnSureClickListener{
 		void setOnSureClickListener(TimeSelectWheelView wheelView);
@@ -59,7 +59,7 @@ public class DateTimeSelectorDialogBuilder extends CustomDialog{
 			.setCustomDialogBottomRightBtnVisibility(View.GONE);
 	}
 	
-	public void onClick(View view) {
+	public void OnCustomDialogClick(View view) {
 		// TODO Auto-generated method stub
 		switch (view.getId()) {
 		case R.id.custom_dialog_title_left_text:
@@ -76,6 +76,7 @@ public class DateTimeSelectorDialogBuilder extends CustomDialog{
 		this.dismiss();
 	}
 
+	@SuppressWarnings("static-access")
 	public void setOnSureClickListener(OnSureClickListener onSureClickListener) {
 		this.onSureClickListener = onSureClickListener;
 	}
