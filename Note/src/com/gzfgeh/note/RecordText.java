@@ -1,7 +1,9 @@
 package com.gzfgeh.note;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,9 +16,12 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Vibrator;
+import android.text.Selection;
+import android.text.Spannable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -67,6 +72,39 @@ public class RecordText extends BaseTitleBar {
 		setTitle(CONTENT);
 		setFile(file);
 		displayRightBtn();
+		
+		Intent intent = getIntent();
+		String filePath = intent.getStringExtra("filePath");
+		if (filePath != null){
+			try {
+				File oldFile = new File(filePath);
+				if (!oldFile.exists())
+					oldFile.createNewFile();
+				@SuppressWarnings("resource")
+				BufferedReader br = new BufferedReader(new FileReader(oldFile));
+				StringBuffer sb = new StringBuffer();
+				String temp = br.readLine();
+				while (temp != null){
+					sb.append(temp);
+					temp = br.readLine();
+				}
+				temp = sb.toString();
+				data.setText(temp);
+				//data.setSelection(temp.length());
+				oldFile.delete();
+				
+//				CharSequence text = data.getText();
+//				if (text instanceof Spannable) {
+//					Spannable spanText = (Spannable)text;
+//				    Selection.setSelection(spanText, text.length());
+//				 }
+				
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 	}
 	

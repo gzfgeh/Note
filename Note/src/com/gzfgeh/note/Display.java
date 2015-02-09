@@ -1,6 +1,10 @@
 package com.gzfgeh.note;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -86,8 +90,8 @@ import android.widget.Toast;
 	//≤‡ª¨  
 	private DrawerLayout drawerLayout;
 	private DateTimeSelectorDialogBuilder dateTimeSelectorDialogBuilder;
-	//PullLayout
-	//private PullLayout pullLayout;
+	//open
+	private File file;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -150,7 +154,11 @@ import android.widget.Toast;
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 				// TODO Auto-generated method stub
-				id = position;
+				String filePath = data.get(position).getContentUri();
+				Intent intent = new Intent(Display.this, RecordText.class);
+				intent.putExtra("filePath", filePath);
+				startActivity(intent);
+				Toast.makeText(getApplicationContext(), position + "-", Toast.LENGTH_SHORT).show();
 			}
         	
         });
@@ -209,7 +217,6 @@ import android.widget.Toast;
         data = operationSQLiteItem.getProviderData(TAB);
         listAdapt = new ListAdapt(this,data,R.layout.list_item);
         listView.setAdapter(listAdapt);
-        //setListViewHeightBasedOnChildren(listView);
         
         registerForContextMenu(listView);		//œ‘ æ≤Àµ•
         
@@ -219,8 +226,6 @@ import android.widget.Toast;
         LinearInterpolator lin = new LinearInterpolator();
         titleSetAnim.setInterpolator(lin);
         titleSetView.startAnimation(titleSetAnim);
-        
-        //titleAddView = (RelativeLayout) findViewById(R.id.addItem);
         
         titleDisplayMenu = (ImageButton) findViewById(R.id.right_btn);
 	}
