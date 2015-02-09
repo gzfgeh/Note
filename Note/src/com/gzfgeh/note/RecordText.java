@@ -20,12 +20,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Vibrator;
-import android.text.Selection;
-import android.text.Spannable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class RecordText extends BaseTitleBar {
 	public static final String TEXT = "text";
@@ -40,6 +39,8 @@ public class RecordText extends BaseTitleBar {
 	private String name;
 	private File file;
 	private OperationSQLiteItem operationSQLiteItem;
+	private File oldFile;
+	private String oldDataString;
 	
 	@SuppressLint("SimpleDateFormat")
 	@Override
@@ -77,7 +78,7 @@ public class RecordText extends BaseTitleBar {
 		String filePath = intent.getStringExtra("filePath");
 		if (filePath != null){
 			try {
-				File oldFile = new File(filePath);
+				oldFile = new File(filePath);
 				if (!oldFile.exists())
 					oldFile.createNewFile();
 				@SuppressWarnings("resource")
@@ -88,18 +89,8 @@ public class RecordText extends BaseTitleBar {
 					sb.append(temp);
 					temp = br.readLine();
 				}
-				temp = sb.toString();
-				data.setText(temp);
-				//data.setSelection(temp.length());
-				oldFile.delete();
-				
-//				CharSequence text = data.getText();
-//				if (text instanceof Spannable) {
-//					Spannable spanText = (Spannable)text;
-//				    Selection.setSelection(spanText, text.length());
-//				 }
-				
-				
+				oldDataString = sb.toString();
+				data.setText(oldDataString);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -155,11 +146,19 @@ public class RecordText extends BaseTitleBar {
 		content = data.getText().toString();
 			switch (v.getId()) {
 			case R.id.left_btn:
-				if (null != file)
-					file.delete();
+				if (content != null){
+					if (content.equals(oldDataString))
+						Toast.makeText(this, "笔记没有更改", Toast.LENGTH_SHORT).show();
+				}else{
+					if (null != file)
+						file.delete();
+				}
 				finish();
 				break;
 			case R.id.right_btn:
+				if (oldDataString != null){
+					//operationSQLiteItem.deleteItemData(id);
+				}
 				if (content != null && !"".equals(content)){
 					try {
 						final FileOutputStream fos = new FileOutputStream(file);

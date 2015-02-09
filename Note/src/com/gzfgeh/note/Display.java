@@ -1,10 +1,6 @@
 package com.gzfgeh.note;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -90,8 +86,7 @@ import android.widget.Toast;
 	//²à»¬  
 	private DrawerLayout drawerLayout;
 	private DateTimeSelectorDialogBuilder dateTimeSelectorDialogBuilder;
-	//open
-	private File file;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -158,7 +153,6 @@ import android.widget.Toast;
 				Intent intent = new Intent(Display.this, RecordText.class);
 				intent.putExtra("filePath", filePath);
 				startActivity(intent);
-				Toast.makeText(getApplicationContext(), position + "-", Toast.LENGTH_SHORT).show();
 			}
         	
         });
