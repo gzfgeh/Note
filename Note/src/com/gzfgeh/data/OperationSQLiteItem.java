@@ -97,4 +97,43 @@ public class OperationSQLiteItem {
 		ContentResolver resolver = context.getContentResolver();
 		resolver.delete(uri, null, null);
 	}
+	
+	public void updateItemContent(int id, String content, String content_uri, String date, 
+				int alarm, long encryption, String ringName, String ringDate, String ringUri){
+		
+		Uri uri = Uri.parse(URI + "/" + id);
+		ContentResolver resolver = context.getContentResolver();
+		ContentValues values = new ContentValues();
+		if (content != null)
+			values.put(DBOpenHelper.CONTENT, content);
+		if (content_uri != null)
+			values.put(DBOpenHelper.CONTENT_URI, content_uri);
+		if (date != null)
+			values.put(DBOpenHelper.DATE, date);
+		if (alarm != 0)
+			values.put(DBOpenHelper.ALARM, alarm);
+		if (encryption != 0)
+			values.put(DBOpenHelper.ENCRYPT, encryption);
+		if (ringName != null)
+			values.put(DBOpenHelper.RING_NAME, ringName);
+		if (ringDate != null)
+			values.put(DBOpenHelper.RING_DATE, ringDate);
+		if (ringUri != null)
+			values.put(DBOpenHelper.RING_URI, ringUri);
+		
+		resolver.update(uri, values, null, null);
+	}
+	
+	public String queryContentUri(int id){
+		String contentUri = null;
+		Uri uri = Uri.parse(URI + "/" + id);
+		ContentResolver resolver = context.getContentResolver();
+		String[] selectionArgs = new String[]{String.valueOf(id)}; 
+		Cursor cursor = resolver.query(uri, null, DBOpenHelper.ID + "=?", selectionArgs, null);
+		int i = cursor.getColumnIndexOrThrow(DBOpenHelper.CONTENT_URI);
+		contentUri = cursor.getString(i);
+		
+		cursor.close();
+		return contentUri;
+	}
 }

@@ -59,25 +59,16 @@ public class RecordText extends BaseTitleBar {
 		File fold = new File(FILE_PATH);
 		if (!fold.exists())
 			fold.mkdirs();
-		//文件是否存在
-		file = new File(FILE_PATH + name);
-		try {
-			if (!file.exists())
-				file.createNewFile();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		operationSQLiteItem = new OperationSQLiteItem(this);
 		setTitle(CONTENT);
-		setFile(file);
 		displayRightBtn();
 		
 		Intent intent = getIntent();
-		String filePath = intent.getStringExtra("filePath");
-		if (filePath != null){
+		int itemID = intent.getIntExtra("ItemID", -1);
+		if (itemID != -1){
 			try {
+				String filePath = operationSQLiteItem.queryContentUri(itemID);
 				oldFile = new File(filePath);
 				if (!oldFile.exists())
 					oldFile.createNewFile();
@@ -95,48 +86,18 @@ public class RecordText extends BaseTitleBar {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		
-	}
-	
-	@SuppressLint("InflateParams") public void encrypt(){
-		Builder dialog = new AlertDialog.Builder(this);
-		LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		LinearLayout layout = (LinearLayout)layoutInflater.inflate(R.layout.encrypt, null);
-		dialog.setView(layout);
-		final EditText encty = (EditText) layout.findViewById(R.id.encryption);
-		dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				encryption = encty.getText().toString();
-				if (encryption.length() != 6){
-					AlertDialog.Builder builder = new AlertDialog.Builder(RecordText.this);
-					builder.setMessage("请输入6个数字!");
-					builder.setNegativeButton("确定", new DialogInterface.OnClickListener(){
-
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// TODO Auto-generated method stub
-							encrypt();
-						}
-						
-					});
-					builder.show();
-				}else{
-					if (content.length() <= 6)
-						operationSQLiteItem.addItemData(content,file.getAbsolutePath(),0,Long.valueOf(encryption),null,null,null);
-					else 
-						operationSQLiteItem.addItemData(content.substring(0, 5),file.getAbsolutePath(),0,Long.valueOf(encryption),null,null,null);
-					
-					setWriteFileFlag(true);
-					finish();
-				}
+		}else{
+			//文件是否存在
+			file = new File(FILE_PATH + name);
+			try {
+				if (!file.exists())
+					file.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		});
-		dialog.setNegativeButton("取消", null);
-		dialog.show();
+			setFile(file);
+		}
 	}
 	
 	public void onClickTitleBtn(View v){
@@ -146,60 +107,51 @@ public class RecordText extends BaseTitleBar {
 		content = data.getText().toString();
 			switch (v.getId()) {
 			case R.id.left_btn:
-				if (content != null){
-					if (content.equals(oldDataString))
+				if (oldDataString != null)
+					if (oldDataString.equals(content))
 						Toast.makeText(this, "笔记没有更改", Toast.LENGTH_SHORT).show();
-				}else{
-					if (null != file)
-						file.delete();
-				}
-				finish();
+					else
+						Toast.makeText(this, "放弃更改", Toast.LENGTH_SHORT).show();
+				else
+					Toast.makeText(this, "放弃添加", Toast.LENGTH_SHORT).show();
+				
+				if (null != file)
+					file.delete();
 				break;
+				
 			case R.id.right_btn:
 				if (oldDataString != null){
-					//operationSQLiteItem.deleteItemData(id);
-				}
-				if (content != null && !"".equals(content)){
-					try {
-						final FileOutputStream fos = new FileOutputStream(file);
-						fos.write(content.getBytes());
-						fos.close();
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					if (oldDataString.equals(data))
+						Toast.makeText(this, "笔记没有更改", Toast.LENGTH_SHORT).show();
+					//else
+						//operationSQLiteItem.updateItemContent(id, CONTENT, content_uri, date, alarm, encryption, ringName, ringDate, ringUri)
 					
-					AlertDialog dialog = new AlertDialog.Builder(this)
-					.setTitle("是否加密")
-					.setPositiveButton("是", new DialogInterface.OnClickListener() {
-						
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// TODO Auto-generated method stub
-							encrypt();
+				}else{
+					if (content != null && !"".equals(content)){
+						try {
+							final FileOutputStream fos = new FileOutputStream(file);
+							fos.write(content.getBytes());
+							fos.close();
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
-					})
-					.setNegativeButton("否", new DialogInterface.OnClickListener() {
+						// TODO Auto-generated method stub
+						if (content.length() <= 6)
+							operationSQLiteItem.addItemData(content,file.getAbsolutePath(),0,0,null,null,null);
+						else 
+							operationSQLiteItem.addItemData(content.substring(0, 5),file.getAbsolutePath(),0,0,null,null,null);
 						
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// TODO Auto-generated method stub
-							if (content.length() <= 6)
-								operationSQLiteItem.addItemData(content,file.getAbsolutePath(),0,0,null,null,null);
-							else 
-								operationSQLiteItem.addItemData(content.substring(0, 5),file.getAbsolutePath(),0,0,null,null,null);
-							
-							setWriteFileFlag(true);
-							finish();
-						}
-					})
-					.create();
-					dialog.show();
-					dialog.setCanceledOnTouchOutside(false);// 设置点击屏幕Dialog不消失 
-					break;
+						if (oldFile != null)
+							oldFile.delete();
+						setWriteFileFlag(true);
+					}
 				}
+				 
+				break;
 			default:
 				break;
 			}
+			finish();
 		}
 }

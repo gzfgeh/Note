@@ -149,9 +149,8 @@ import android.widget.Toast;
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 				// TODO Auto-generated method stub
-				String filePath = data.get(position).getContentUri();
 				Intent intent = new Intent(Display.this, RecordText.class);
-				intent.putExtra("filePath", filePath);
+				intent.putExtra("ItemID", position);
 				startActivity(intent);
 			}
         	
