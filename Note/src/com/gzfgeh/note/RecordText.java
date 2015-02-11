@@ -12,18 +12,12 @@ import com.gzfgeh.data.OperationSQLiteItem;
 import com.gzfgeh.service.BaseTitleBar;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Vibrator;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class RecordText extends BaseTitleBar {
@@ -33,7 +27,6 @@ public class RecordText extends BaseTitleBar {
 				File.separator + Display.NOTE + File.separator + TEXT + File.separator;
 	
 	private String content;
-	private String encryption;
 	private EditText data;
 	
 	private String name;
@@ -41,6 +34,7 @@ public class RecordText extends BaseTitleBar {
 	private OperationSQLiteItem operationSQLiteItem;
 	private File oldFile;
 	private String oldDataString;
+	private int oldID;
 	
 	@SuppressLint("SimpleDateFormat")
 	@Override
@@ -59,16 +53,26 @@ public class RecordText extends BaseTitleBar {
 		File fold = new File(FILE_PATH);
 		if (!fold.exists())
 			fold.mkdirs();
+		//文件是否存在
+		file = new File(FILE_PATH + name);
+		try {
+			if (!file.exists())
+				file.createNewFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		setFile(file);
 		
 		operationSQLiteItem = new OperationSQLiteItem(this);
 		setTitle(CONTENT);
 		displayRightBtn();
 		
 		Intent intent = getIntent();
-		int itemID = intent.getIntExtra("ItemID", -1);
-		if (itemID != -1){
+		oldID = intent.getIntExtra("ItemID", -1);
+		if (oldID != -1){
 			try {
-				String filePath = operationSQLiteItem.queryContentUri(itemID);
+				String filePath = operationSQLiteItem.queryContentUri(oldID);
 				oldFile = new File(filePath);
 				if (!oldFile.exists())
 					oldFile.createNewFile();
@@ -86,17 +90,6 @@ public class RecordText extends BaseTitleBar {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}else{
-			//文件是否存在
-			file = new File(FILE_PATH + name);
-			try {
-				if (!file.exists())
-					file.createNewFile();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			setFile(file);
 		}
 	}
 	
@@ -105,53 +98,71 @@ public class RecordText extends BaseTitleBar {
 		vibrator.vibrate(new long[]{1,100,0,0}, -1);
 		
 		content = data.getText().toString();
-			switch (v.getId()) {
-			case R.id.left_btn:
-				if (oldDataString != null)
-					if (oldDataString.equals(content))
-						Toast.makeText(this, "笔记没有更改", Toast.LENGTH_SHORT).show();
-					else
-						Toast.makeText(this, "放弃更改", Toast.LENGTH_SHORT).show();
+		switch (v.getId()) {
+		case R.id.left_btn:
+			if (oldDataString != null)
+				if (oldDataString.equals(content))
+					Toast.makeText(this, "笔记没有更改", Toast.LENGTH_SHORT).show();
 				else
-					Toast.makeText(this, "放弃添加", Toast.LENGTH_SHORT).show();
-				
-				if (null != file)
-					file.delete();
-				break;
-				
-			case R.id.right_btn:
-				if (oldDataString != null){
-					if (oldDataString.equals(data))
-						Toast.makeText(this, "笔记没有更改", Toast.LENGTH_SHORT).show();
-					//else
-						//operationSQLiteItem.updateItemContent(id, CONTENT, content_uri, date, alarm, encryption, ringName, ringDate, ringUri)
+					Toast.makeText(this, "放弃更改", Toast.LENGTH_SHORT).show();
+			else
+				Toast.makeText(this, "放弃添加", Toast.LENGTH_SHORT).show();
+			
+			if (null != file)
+				file.delete();
+			break;
+			
+		case R.id.right_btn:
+			if (oldDataString != null){
+				if (oldDataString.equals(content)){
+					if (null != file)
+						file.delete();
+					Toast.makeText(this, "笔记没有更改", Toast.LENGTH_SHORT).show();
+				}
+				else{
+					if (content.length() <= 6)
+						operationSQLiteItem.updateItemContent(oldID, content, file.getAbsolutePath(), null, 0, 0, null, null, null);
+					else
+						operationSQLiteItem.updateItemContent(oldID, content.substring(0,5), file.getAbsolutePath(), null, 0, 0, null, null, null);
 					
-				}else{
-					if (content != null && !"".equals(content)){
-						try {
-							final FileOutputStream fos = new FileOutputStream(file);
-							fos.write(content.getBytes());
-							fos.close();
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						// TODO Auto-generated method stub
-						if (content.length() <= 6)
-							operationSQLiteItem.addItemData(content,file.getAbsolutePath(),0,0,null,null,null);
-						else 
-							operationSQLiteItem.addItemData(content.substring(0, 5),file.getAbsolutePath(),0,0,null,null,null);
-						
-						if (oldFile != null)
-							oldFile.delete();
-						setWriteFileFlag(true);
+					if (null != oldFile)
+						oldFile.delete();
+					
+					try {
+						final FileOutputStream fos = new FileOutputStream(file);
+						fos.write(content.getBytes());
+						fos.close();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
 				}
-				 
-				break;
-			default:
-				break;
+			}else{
+				if (content != null && !"".equals(content)){
+					try {
+						final FileOutputStream fos = new FileOutputStream(file);
+						fos.write(content.getBytes());
+						fos.close();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					// TODO Auto-generated method stub
+					if (content.length() <= 6)
+						operationSQLiteItem.addItemData(content,file.getAbsolutePath(),0,0,null,null,null);
+					else 
+						operationSQLiteItem.addItemData(content.substring(0, 5),file.getAbsolutePath(),0,0,null,null,null);
+				}else{
+					if (file != null)
+						file.delete();
+				}
 			}
-			finish();
+			break;
+			
+		default:
+			break;
 		}
+		finish();
+	}
+	
 }

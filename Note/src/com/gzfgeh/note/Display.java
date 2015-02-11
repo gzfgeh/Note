@@ -149,8 +149,10 @@ import android.widget.Toast;
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 				// TODO Auto-generated method stub
+				TextView itemId = (TextView) view.findViewById(R.id.item_id);
+				int num = Integer.valueOf(itemId.getText().toString());
 				Intent intent = new Intent(Display.this, RecordText.class);
-				intent.putExtra("ItemID", position);
+				intent.putExtra("ItemID", num);
 				startActivity(intent);
 			}
         	
@@ -411,6 +413,10 @@ import android.widget.Toast;
 		TextView itemId = (TextView) view.findViewById(R.id.item_id);
 		int num = Integer.valueOf(itemId.getText().toString());
 		operationSQLiteItem.deleteItemData(num);
+		String filePath = operationSQLiteItem.queryContentUri(num);
+		File file = new File(filePath);
+		if (file.exists())
+			file.delete();
 		ReflashListView();
 	}
 	

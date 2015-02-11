@@ -125,15 +125,12 @@ public class OperationSQLiteItem {
 	}
 	
 	public String queryContentUri(int id){
-		String contentUri = null;
-		Uri uri = Uri.parse(URI + "/" + id);
 		ContentResolver resolver = context.getContentResolver();
-		String[] selectionArgs = new String[]{String.valueOf(id)}; 
-		Cursor cursor = resolver.query(uri, null, DBOpenHelper.ID + "=?", selectionArgs, null);
-		int i = cursor.getColumnIndexOrThrow(DBOpenHelper.CONTENT_URI);
-		contentUri = cursor.getString(i);
-		
-		cursor.close();
-		return contentUri;
+		Uri uri = Uri.parse(URI + "/" + id);
+    	Cursor cursor = resolver.query(uri, null, null, null, null);
+    	cursor.moveToFirst();
+    	String contentUriString = cursor.getString(cursor.getColumnIndexOrThrow(DBOpenHelper.CONTENT_URI));
+    	cursor.close();
+    	return contentUriString;
 	}
 }
