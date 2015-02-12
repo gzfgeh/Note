@@ -5,27 +5,19 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.gzfgeh.swipemenulistview.SwipeMenu;
-import com.gzfgeh.swipemenulistview.SwipeMenuCreator;
-import com.gzfgeh.swipemenulistview.SwipeMenuItem;
 import com.gzfgeh.swipemenulistview.SwipeMenuListView;
-import com.gzfgeh.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
 import com.gzfgeh.data.ListAdapt;
 import com.gzfgeh.data.ListItemData;
 import com.gzfgeh.data.OperationSQLiteItem;
-import com.gzfgeh.dialog.DateTimeSelectorDialogBuilder;
-import com.gzfgeh.dialog.DateTimeSelectorDialogBuilder.OnSureClickListener;
+import com.gzfgeh.service.ListViewItemMenu;
 import com.gzfgeh.service.SharedPreferencesData;
 import com.gzfgeh.service.help;
-import com.gzfgeh.wheelview.TimeSelectWheelView;
 import com.nineoldandroids.view.ViewHelper;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Vibrator;
@@ -82,10 +74,14 @@ import android.widget.Toast;
 	private OperationSQLiteItem operationSQLiteItem;
 	private List<ListItemData> data;
 	private ListAdapt listAdapt;
-	private SwipeMenuListView listView;
+	private SwipeMenuListView listViewText;
+	private SwipeMenuListView listViewVoice;
+	private SwipeMenuListView listViewPhoto;
+	private SwipeMenuListView listViewVideo;
 	//侧滑  
 	private DrawerLayout drawerLayout;
-	private DateTimeSelectorDialogBuilder dateTimeSelectorDialogBuilder;
+	@SuppressWarnings("unused")
+	private ListViewItemMenu listViewItemMenu;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -139,11 +135,11 @@ import android.widget.Toast;
         Intent intent = getIntent();
         userName.setText(intent.getStringExtra("user_name"));
         
-        listView = (SwipeMenuListView) findViewById(R.id.textlistview);
+        listViewText = (SwipeMenuListView) findViewById(R.id.textlistview);
         operationSQLiteItem = new OperationSQLiteItem(this);
         data = operationSQLiteItem.getProviderData(TAB);
         listAdapt = new ListAdapt(this, data, R.layout.list_item);
-        listView.setOnItemClickListener(new OnItemClickListener() {
+        listViewText.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -157,63 +153,62 @@ import android.widget.Toast;
 			}
         	
         });
-        listView.setAdapter(listAdapt);
-      
-        SwipeMenuCreator creator = new SwipeMenuCreator() {
-    		
-    		@Override
-    		public void create(SwipeMenu menu) {
-    			// TODO Auto-generated method stub
-    			SwipeMenuItem alarmItem = new SwipeMenuItem(getApplicationContext());
-    			alarmItem.setIcon(R.drawable.alarm_item);
-    			alarmItem.setBackground(new ColorDrawable(Color.WHITE));
-    			alarmItem.setWidth(240);
-    			menu.addMenuItem(alarmItem);
-    			
-    			SwipeMenuItem deleteItem = new SwipeMenuItem(getApplicationContext());
-    			deleteItem.setIcon(R.drawable.delete_item);
-    			deleteItem.setBackground(new ColorDrawable(Color.RED));
-    			deleteItem.setWidth(240);
-    			menu.addMenuItem(deleteItem);
-    		}
-    	};
-    	listView.setMenuCreator(creator);
-    	listView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			
-			@Override
-			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-				// TODO Auto-generated method stub
-				switch (index) {
-				case 0:
-					if (null == dateTimeSelectorDialogBuilder)
-						dateTimeSelectorDialogBuilder = new DateTimeSelectorDialogBuilder(Display.this, R.style.custom_dialog);
-					
-					dateTimeSelectorDialogBuilder.show();
-					dateTimeSelectorDialogBuilder.setOnSureClickListener(new OnSureClickListener() {
-						
-						@Override
-						public void setOnSureClickListener(TimeSelectWheelView wheelView) {
-							// TODO Auto-generated method stub
-							Toast.makeText(Display.this, wheelView.getSelectTime(), Toast.LENGTH_SHORT).show();
-						}
-					});
-					break;
-				case 1:
-					deleteItem(listView, position);
-					break;
-				default:
-					break;
-				}
-				return true;
-			}
-		});
-
-        operationSQLiteItem = new OperationSQLiteItem(this);
-        data = operationSQLiteItem.getProviderData(TAB);
-        listAdapt = new ListAdapt(this,data,R.layout.list_item);
-        listView.setAdapter(listAdapt);
+        listViewText.setAdapter(listAdapt);
+        listViewItemMenu = new ListViewItemMenu(getApplicationContext(), listViewText, TAB);
         
-        registerForContextMenu(listView);		//显示菜单
+        listViewVoice = (SwipeMenuListView) findViewById(R.id.soundslistview);
+        listViewVoice.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				// TODO Auto-generated method stub
+				TextView itemId = (TextView) view.findViewById(R.id.item_id);
+				int num = Integer.valueOf(itemId.getText().toString());
+				Intent intent = new Intent(Display.this, RecordVoice.class);
+				intent.putExtra("ItemID", num);
+				startActivity(intent);
+			}
+        	
+        });
+        listViewItemMenu = new ListViewItemMenu(getApplicationContext(), listViewVoice, TAB+1);
+        
+        listViewPhoto = (SwipeMenuListView) findViewById(R.id.piclistview);
+        listViewPhoto.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				// TODO Auto-generated method stub
+				TextView itemId = (TextView) view.findViewById(R.id.item_id);
+				int num = Integer.valueOf(itemId.getText().toString());
+				Intent intent = new Intent(Display.this, RecordText.class);
+				intent.putExtra("ItemID", num);
+				startActivity(intent);
+			}
+        	
+        });
+        listViewItemMenu = new ListViewItemMenu(getApplicationContext(), listViewPhoto, TAB+2);
+        
+        listViewVideo = (SwipeMenuListView) findViewById(R.id.movielistview);
+        listViewVideo.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				// TODO Auto-generated method stub
+				TextView itemId = (TextView) view.findViewById(R.id.item_id);
+				int num = Integer.valueOf(itemId.getText().toString());
+				Intent intent = new Intent(Display.this, RecordText.class);
+				intent.putExtra("ItemID", num);
+				startActivity(intent);
+			}
+        	
+        });
+        listViewItemMenu = new ListViewItemMenu(getApplicationContext(), listViewVideo, TAB+3);
+        
+        
+        registerForContextMenu(listViewText);		//显示菜单
         
         //title bar 的效果
         titleSetView = (ImageButton) findViewById(R.id.left_btn);
@@ -408,24 +403,6 @@ import android.widget.Toast;
 		return super.onContextItemSelected(item);
 	}
     
-	void deleteItem(SwipeMenuListView swipedItemDelete, int position){
-		View view = swipedItemDelete.getChildAt(position - swipedItemDelete.getFirstVisiblePosition());
-		TextView itemId = (TextView) view.findViewById(R.id.item_id);
-		int num = Integer.valueOf(itemId.getText().toString());
-		String filePath = operationSQLiteItem.queryContentUri(num);
-		File file = new File(filePath);
-		if (file.exists())
-			file.delete();
-		operationSQLiteItem.deleteItemData(num);
-		ReflashListView();
-	}
-	
-    void ReflashListView(){
-    	data = operationSQLiteItem.getProviderData(tabs.getCurrentTab());
-    	listAdapt = new ListAdapt(this,data,R.layout.list_item);
-    	listView.setAdapter(listAdapt);
-    }
-    
 	private void addEvent() {
 		// TODO Auto-generated method stub
 		drawerLayout.setDrawerListener(new DrawerListener() {
@@ -506,7 +483,8 @@ import android.widget.Toast;
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		ReflashListView();
+		operationSQLiteItem.reflashListView(listViewText, 0);
+		operationSQLiteItem.reflashListView(listViewVoice,1);
 	}
 	
 	

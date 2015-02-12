@@ -5,10 +5,12 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.gzfgeh.data.OperationSQLiteItem;
 import com.gzfgeh.service.BaseTitleBar;
 import com.gzfgeh.service.MyMediaRecorder;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,7 +22,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class RecordVoice extends BaseTitleBar {
 	private static final String TAG = "RecordVoice";
@@ -43,6 +48,12 @@ public class RecordVoice extends BaseTitleBar {
 	
 	private MyMediaRecorder myMediaRecorder;
 	private File file;
+	
+	private View fileDisplay;
+	private TextView filePath;
+	private Button clickNote;
+	private int oldID;
+	
 	@SuppressLint("HandlerLeak") private Handler handler = new Handler(){
 
 		@Override
@@ -94,86 +105,114 @@ public class RecordVoice extends BaseTitleBar {
 		setFile(file);
 		setTitle("录音");
 		
-		myMediaRecorder = new MyMediaRecorder(file,handler);
-		
-		voiceImage = (ImageView) findViewById(R.id.voice);
-		voiceImage.setBackgroundResource(R.drawable.talk);
-		final AnimationDrawable voiceAnimation = (AnimationDrawable) voiceImage.getBackground();
-		voiceAnimation.setOneShot(false);	//一直
-		voiceAnimation.start();
-		
 		talkStrong = (ImageView) findViewById(R.id.talk_strong);
-		
 		talkOKView = findViewById(R.id.talk_ok);
 		talkCancleView = findViewById(R.id.talk_cancle);
-
-		voiceImage.setOnLongClickListener(new OnLongClickListener() {
-			
-			public boolean onLongClick(View view) {
-				// TODO Auto-generated method stub
-				Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-				vibrator.vibrate(new long[]{1,100,0,0}, -1);
-				
-				voiceAnimation.stop();
-				talkOKView.setVisibility(View.VISIBLE);
-				talkCancleView.setVisibility(View.GONE);
-				
-				voiceImage.getLocationOnScreen(location);
-				yDown = location[1] + 120;
-				
-				talkStrong.setBackgroundResource(R.drawable.e);
-				myMediaRecorder.startRecord();
-				Log.i(TAG, "LongClick");
-				
-				view.setOnTouchListener(new OnTouchListener() {
-					
-					@Override
-					public boolean onTouch(View view, MotionEvent event) {
-						// TODO Auto-generated method stub
-						
-						switch (event.getAction()) {
-						case MotionEvent.ACTION_DOWN:
-							Log.i(TAG, "down");
-							break;
-							
-						case MotionEvent.ACTION_MOVE:
-							yMove = event.getRawY();
-							if (yDown - yMove > 200){
-								talkOKView.setVisibility(View.GONE);
-								talkCancleView.setVisibility(View.VISIBLE);
-							}else{
-								talkOKView.setVisibility(View.VISIBLE);
-								talkCancleView.setVisibility(View.GONE);
-							}
-							Log.i(TAG, "move");
-							break;
-							
-						case MotionEvent.ACTION_UP:
-							if (yDown - yMove < 200){
-								displayRightBtn();
-								displayStatusView();
-							}
-							else
-								file.delete();
-							
-							myMediaRecorder.stopRecord();	
-							talkOKView.setVisibility(View.GONE);
-							talkCancleView.setVisibility(View.GONE);
-							voiceAnimation.start();
-							Log.i(TAG, "up");
-							break;
-
-						default:
-							break;
-						}
-						return false;
-					}
-				});
-				
-				return false;
-			}
-		});
+		clickNote = (Button) findViewById(R.id.click_note);
 		
+		Intent intent = getIntent();
+		oldID = intent.getIntExtra("ItemID", -1);
+		if (oldID != -1){
+			if (file != null)
+				file.delete();
+			clickNote.setVisibility(View.GONE);
+			talkOKView.setVisibility(View.GONE);
+			talkCancleView.setVisibility(View.GONE);
+			
+			OperationSQLiteItem operationSQLiteItem = new OperationSQLiteItem(this);
+			String path = operationSQLiteItem.queryContentUri(oldID);
+			String[] pathSplit = path.split("/");
+			String fileName = pathSplit[pathSplit.length - 1];
+			
+			filePath = (TextView) findViewById(R.id.file_path);
+			filePath.setText(fileName);
+			
+			fileDisplay = findViewById(R.id.file_display);
+			fileDisplay.setVisibility(View.VISIBLE);
+			fileDisplay.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View view) {
+					// TODO Auto-generated method stub
+					Toast.makeText(getApplicationContext(), "dddd", Toast.LENGTH_SHORT).show();
+				}
+			});
+		}else{
+			myMediaRecorder = new MyMediaRecorder(file,handler);
+			
+			voiceImage = (ImageView) findViewById(R.id.voice);
+			voiceImage.setBackgroundResource(R.drawable.talk);
+			final AnimationDrawable voiceAnimation = (AnimationDrawable) voiceImage.getBackground();
+			voiceAnimation.setOneShot(false);	//一直
+			voiceAnimation.start();
+			
+			voiceImage.setOnLongClickListener(new OnLongClickListener() {
+				
+				public boolean onLongClick(View view) {
+					// TODO Auto-generated method stub
+					Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+					vibrator.vibrate(new long[]{1,100,0,0}, -1);
+					
+					voiceAnimation.stop();
+					talkOKView.setVisibility(View.VISIBLE);
+					talkCancleView.setVisibility(View.GONE);
+					
+					voiceImage.getLocationOnScreen(location);
+					yDown = location[1] + 120;
+					
+					talkStrong.setBackgroundResource(R.drawable.e);
+					myMediaRecorder.startRecord();
+					Log.i(TAG, "LongClick");
+					
+					view.setOnTouchListener(new OnTouchListener() {
+						
+						@Override
+						public boolean onTouch(View view, MotionEvent event) {
+							// TODO Auto-generated method stub
+							
+							switch (event.getAction()) {
+							case MotionEvent.ACTION_DOWN:
+								Log.i(TAG, "down");
+								break;
+								
+							case MotionEvent.ACTION_MOVE:
+								yMove = event.getRawY();
+								if (yDown - yMove > 200){
+									talkOKView.setVisibility(View.GONE);
+									talkCancleView.setVisibility(View.VISIBLE);
+								}else{
+									talkOKView.setVisibility(View.VISIBLE);
+									talkCancleView.setVisibility(View.GONE);
+								}
+								Log.i(TAG, "move");
+								break;
+								
+							case MotionEvent.ACTION_UP:
+								if (yDown - yMove < 200){
+									displayRightBtn();
+									displayStatusView();
+								}
+								else
+									file.delete();
+								
+								myMediaRecorder.stopRecord();	
+								talkOKView.setVisibility(View.GONE);
+								talkCancleView.setVisibility(View.GONE);
+								voiceAnimation.start();
+								Log.i(TAG, "up");
+								break;
+
+							default:
+								break;
+							}
+							return false;
+						}
+					});
+					
+					return false;
+				}
+			});
+			
+		}
 	}
-	
 }

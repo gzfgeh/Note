@@ -1,9 +1,13 @@
 package com.gzfgeh.data;
 
+import java.io.File;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.gzfgeh.note.R;
+import com.gzfgeh.swipemenulistview.SwipeMenuListView;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
@@ -11,6 +15,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.view.View;
+import android.widget.TextView;
 
 public class OperationSQLiteItem {
 	private static final String URI = "content://com.gzfgeh.providers.itemdataprovider/items";
@@ -92,10 +98,21 @@ public class OperationSQLiteItem {
 		resolver.insert(uri, values);
 	}
 	
-	public void deleteItemData(int id){
-		Uri uri = Uri.parse(URI + "/" + id);
+	public void deleteItemData(SwipeMenuListView swipedItemDelete, int tabNum, int position){
+		View view = swipedItemDelete.getChildAt(position - swipedItemDelete.getFirstVisiblePosition());
+		TextView itemId = (TextView) view.findViewById(R.id.item_id);
+		int num = Integer.valueOf(itemId.getText().toString());
+		String filePath = queryContentUri(num);
+		File file = new File(filePath);
+		if (file.exists())
+			file.delete();
+		
+		Uri uri = Uri.parse(URI + "/" + num);
 		ContentResolver resolver = context.getContentResolver();
 		resolver.delete(uri, null, null);
+		
+		reflashListView(swipedItemDelete,tabNum);
+		
 	}
 	
 	public void updateItemContent(int id, String content, String content_uri, String date, 
@@ -133,4 +150,10 @@ public class OperationSQLiteItem {
     	cursor.close();
     	return contentUriString;
 	}
+	
+	public void reflashListView(SwipeMenuListView listView, int tabNum){
+		List<ListItemData> data = getProviderData(tabNum);
+		ListAdapt listAdapt = new ListAdapt(context,data,R.layout.list_item);
+		listView.setAdapter(listAdapt);
+    }
 }

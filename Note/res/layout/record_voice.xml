@@ -77,6 +77,37 @@
         
     </RelativeLayout>
     
+    
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:id="@+id/file_display"
+        android:layout_centerInParent="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/talk_bg"
+        android:clickable="true"
+        android:visibility="gone">
+        
+        <ImageView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@drawable/sound"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"/>
+        
+        <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/file_path"
+	        android:gravity="center"
+	        android:textColor="#FFFFFF"
+	        android:layout_alignParentRight="true"
+	        android:layout_marginRight="10dp"/>
+        
+    </RelativeLayout>
+    
+    
     <Button
         android:id="@+id/click_note"
         android:layout_width="wrap_content"
