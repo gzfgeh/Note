@@ -120,14 +120,6 @@ public class RecordText extends BaseTitleBar {
 					Toast.makeText(this, "笔记没有更改", Toast.LENGTH_SHORT).show();
 				}
 				else{
-					if (content.length() <= 6)
-						operationSQLiteItem.updateItemContent(oldID, content, file.getAbsolutePath(), null, 0, 0, null, null, null);
-					else
-						operationSQLiteItem.updateItemContent(oldID, content.substring(0,5), file.getAbsolutePath(), null, 0, 0, null, null, null);
-					
-					if (null != oldFile)
-						oldFile.delete();
-					
 					try {
 						final FileOutputStream fos = new FileOutputStream(file);
 						fos.write(content.getBytes());
@@ -136,6 +128,15 @@ public class RecordText extends BaseTitleBar {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					
+					if (content.length() <= 6)
+						operationSQLiteItem.updateItemContent(oldID, content, file.getAbsolutePath(), null, 0, 0, null, null, null);
+					else
+						operationSQLiteItem.updateItemContent(oldID, content.substring(0,5), file.getAbsolutePath(), null, 0, 0, null, null, null);
+					
+					setWriteFileFlag(true);
+					if (null != oldFile)
+						oldFile.delete();
 				}
 			}else{
 				if (content != null && !"".equals(content)){
@@ -152,6 +153,7 @@ public class RecordText extends BaseTitleBar {
 						operationSQLiteItem.addItemData(content,file.getAbsolutePath(),0,0,null,null,null);
 					else 
 						operationSQLiteItem.addItemData(content.substring(0, 5),file.getAbsolutePath(),0,0,null,null,null);
+					setWriteFileFlag(true);
 				}else{
 					if (file != null)
 						file.delete();

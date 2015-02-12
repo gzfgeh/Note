@@ -412,11 +412,11 @@ import android.widget.Toast;
 		View view = swipedItemDelete.getChildAt(position - swipedItemDelete.getFirstVisiblePosition());
 		TextView itemId = (TextView) view.findViewById(R.id.item_id);
 		int num = Integer.valueOf(itemId.getText().toString());
-		operationSQLiteItem.deleteItemData(num);
 		String filePath = operationSQLiteItem.queryContentUri(num);
 		File file = new File(filePath);
 		if (file.exists())
 			file.delete();
+		operationSQLiteItem.deleteItemData(num);
 		ReflashListView();
 	}
 	
