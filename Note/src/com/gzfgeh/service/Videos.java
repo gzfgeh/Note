@@ -39,6 +39,7 @@ public class Videos extends Activity {
 	private TextView timerView;
 	private Handler handler;
 	
+	
 	private int hou = 0;
 	private int min = 0;
 	private int sec = 0;
@@ -79,6 +80,7 @@ public class Videos extends Activity {
 			startRecord();
 			handler.postDelayed(ReflashTime, 1000);
 			break;
+			
 		case R.id.yes:
 			if (mediaRecorder != null){
 				mediaRecorder.stop();
@@ -92,6 +94,7 @@ public class Videos extends Activity {
 			setResult(RESULT_OK,intent);
 			finish();
 			break;
+			
 		case R.id.no:
 			if (mediaRecorder != null){
 				mediaRecorder.stop();
@@ -104,6 +107,18 @@ public class Videos extends Activity {
 			getLayout.setVisibility(View.GONE);
 			handler.removeCallbacks(ReflashTime);
 			break;
+			
+		case R.id.video_cancle_text:
+			if (mediaRecorder != null){
+				mediaRecorder.stop();
+				mediaRecorder.release();
+				mediaRecorder = null;
+			}
+			if (null != file)
+				file.delete();
+			finish();
+			break;
+			
 		default:
 			break;
 		}

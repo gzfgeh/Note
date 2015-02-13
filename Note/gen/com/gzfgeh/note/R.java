@@ -97,7 +97,7 @@ containing a value of this type.
     }
     public static final class id {
         public static final int about=0x7f0a002c;
-        public static final int action_settings=0x7f0a006c;
+        public static final int action_settings=0x7f0a006d;
         public static final int all_content=0x7f0a0009;
         public static final int auto=0x7f0a0006;
         public static final int cancle=0x7f0a0048;
@@ -148,7 +148,7 @@ containing a value of this type.
         public static final int menu_content=0x7f0a004f;
         public static final int movie=0x7f0a003d;
         public static final int movielistview=0x7f0a003e;
-        public static final int no=0x7f0a006a;
+        public static final int no=0x7f0a006b;
         public static final int ok=0x7f0a000e;
         public static final int password=0x7f0a0004;
         public static final int pic=0x7f0a003b;
@@ -160,7 +160,7 @@ containing a value of this type.
         public static final int remember=0x7f0a0005;
         public static final int right_btn=0x7f0a000d;
         public static final int set_username=0x7f0a0029;
-        public static final int shape_bacground=0x7f0a006b;
+        public static final int shape_bacground=0x7f0a006c;
         public static final int signin_button=0x7f0a0007;
         public static final int sounds=0x7f0a0039;
         public static final int soundslistview=0x7f0a003a;
@@ -200,11 +200,12 @@ containing a value of this type.
         public static final int titlebar=0x7f0a000a;
         public static final int titlebar_text=0x7f0a000c;
         public static final int username=0x7f0a0002;
+        public static final int video_cancle_text=0x7f0a0068;
         public static final int video_layout=0x7f0a0065;
         public static final int voice=0x7f0a004d;
         public static final int voice_view=0x7f0a0042;
         public static final int wheelview=0x7f0a0024;
-        public static final int yes=0x7f0a0068;
+        public static final int yes=0x7f0a006a;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;

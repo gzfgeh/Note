@@ -24,21 +24,23 @@
             android:id="@+id/record"/>
         
     </RelativeLayout>
-    
+ 
     <RelativeLayout 
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/display_button">
         
-        <ImageView 
+        <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/yes"
+            android:id="@+id/video_cancle_text"
+            android:text="取消"
+            android:textColor="@color/transgray"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="100dp"
-            android:id="@+id/yes"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:clickable="true"
             android:onClick="onClick"/>
         
         <TextView 
@@ -52,10 +54,22 @@
         <ImageView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/yes"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_above="@id/timer"
+            android:id="@+id/yes"
+            android:layout_marginBottom="20dp"
+            android:onClick="onClick"/>
+        
+        <ImageView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@drawable/no"
-            android:layout_alignLeft="@id/yes"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="100dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_below="@id/timer"
+            android:layout_marginTop="20dp"
             android:id="@+id/no"
             android:onClick="onClick"/>
         

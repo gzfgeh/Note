@@ -35,11 +35,13 @@ public class RecordVideos extends BaseTitleBar {
 				//getImage(file.getAbsolutePath());
 				Intent intent = getIntent();
 				String fileName = intent.getStringExtra("fileName");
-				File file = new File(fileName);
-				setFile(file);
-				displayRightBtn();
-				displayStatusView();
-				setFlag(true);
+				if (fileName != null){
+					File file = new File(fileName);
+					setFile(file);
+					displayRightBtn();
+					displayStatusView();
+					setFlag(true);
+				}
 			}
 		}else{
 			finish();
