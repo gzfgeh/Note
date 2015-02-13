@@ -22,9 +22,7 @@ public class RecordVideos extends BaseTitleBar {
 		
 		setContent(CONTENT);
 		setTitle("¿ÌÂ¼");
-	}
-	
-	public void onClick(View v){
+		
 		Intent intent = new Intent(RecordVideos.this,Videos.class);
 		startActivityForResult(intent,RESULT);
 	}
@@ -43,6 +41,8 @@ public class RecordVideos extends BaseTitleBar {
 				displayStatusView();
 				setFlag(true);
 			}
+		}else{
+			finish();
 		}
 		super.onActivityResult(requestCode, resultCode, data);  
 	}

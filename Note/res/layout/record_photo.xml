@@ -3,26 +3,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF">
-    
-    <ImageView 
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:background="@drawable/record_photo"
-	    android:layout_centerInParent="true"
-	    android:id="@+id/photo"
-	    android:onClick="onClick"/>
-    
+
     <ImageView 
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_centerHorizontal="true"
 	    android:layout_alignParentTop="true"
-	    android:background="@drawable/ok"
+	    android:layout_margin="30dp"
+	    android:layout_centerInParent="true"
 	    android:visibility="gone"
 	    android:id="@+id/pic"/>
     
-    <TextView 
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@id/photo"/>
+    <EditText 
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:id="@+id/pic_text"
+	    android:layout_margin="10dp"
+	    android:textColor="#000000"
+	    android:inputType="textMultiLine"
+	    android:textColorHighlight="#ccccFF"
+	    android:textScaleX="1.5"
+	    android:background="#cccccc"
+	    android:cursorVisible="true"
+	    android:scrollbars="vertical"
+	    android:focusable="true"		
+	    android:focusableInTouchMode="true"		
+	    android:clickable="true"
+	    android:layout_below="@id/pic"
+	    android:visibility="gone"
+	    android:gravity="left|top"/>
+    
 </RelativeLayout>

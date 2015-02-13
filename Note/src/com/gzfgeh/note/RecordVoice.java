@@ -6,12 +6,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.gzfgeh.data.OperationSQLiteItem;
+import com.gzfgeh.music.MusicBroadcastReceiver;
 import com.gzfgeh.service.BaseTitleBar;
 import com.gzfgeh.service.MyMediaRecorder;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.AnimationDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -51,8 +54,11 @@ public class RecordVoice extends BaseTitleBar {
 	
 	private View fileDisplay;
 	private TextView filePath;
+	@SuppressWarnings("unused")
 	private Button clickNote;
 	private int oldID;
+	
+	private MusicBroadcastReceiver musicBroadcastReceiver;
 	
 	@SuppressLint("HandlerLeak") private Handler handler = new Handler(){
 
@@ -109,35 +115,33 @@ public class RecordVoice extends BaseTitleBar {
 		talkOKView = findViewById(R.id.talk_ok);
 		talkCancleView = findViewById(R.id.talk_cancle);
 		clickNote = (Button) findViewById(R.id.click_note);
+		fileDisplay = findViewById(R.id.file_display);
+		filePath = (TextView) findViewById(R.id.file_path);
 		
 		Intent intent = getIntent();
 		oldID = intent.getIntExtra("ItemID", -1);
 		if (oldID != -1){
 			if (file != null)
 				file.delete();
-			clickNote.setVisibility(View.GONE);
-			talkOKView.setVisibility(View.GONE);
-			talkCancleView.setVisibility(View.GONE);
 			
 			OperationSQLiteItem operationSQLiteItem = new OperationSQLiteItem(this);
-			String path = operationSQLiteItem.queryContentUri(oldID);
+			final String path = operationSQLiteItem.queryContentUri(oldID);
 			String[] pathSplit = path.split("/");
 			String fileName = pathSplit[pathSplit.length - 1];
-			
-			filePath = (TextView) findViewById(R.id.file_path);
 			filePath.setText(fileName);
-			
-			fileDisplay = findViewById(R.id.file_display);
-			fileDisplay.setVisibility(View.VISIBLE);
 			fileDisplay.setOnClickListener(new View.OnClickListener() {
 				
 				@Override
 				public void onClick(View view) {
 					// TODO Auto-generated method stub
-					Toast.makeText(getApplicationContext(), "dddd", Toast.LENGTH_SHORT).show();
+					Intent intent = new Intent(Intent.ACTION_VIEW);
+					Uri uri = Uri.parse(path);
+					intent.setDataAndType(uri, "audio/*");
+					startActivity(intent);
 				}
 			});
 		}else{
+			fileDisplay.setVisibility(View.GONE);
 			myMediaRecorder = new MyMediaRecorder(file,handler);
 			
 			voiceImage = (ImageView) findViewById(R.id.voice);
@@ -215,4 +219,28 @@ public class RecordVoice extends BaseTitleBar {
 			
 		}
 	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		musicBroadcastReceiver = new MusicBroadcastReceiver();
+		IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.android.music.metachanged");
+        intentFilter.addAction("com.android.music.queuechanged");
+        intentFilter.addAction("com.android.music.playbackcomplete");
+        intentFilter.addAction("com.android.music.playstatechanged");
+        registerReceiver(musicBroadcastReceiver, intentFilter);
+        super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		if (musicBroadcastReceiver != null)
+			unregisterReceiver(musicBroadcastReceiver);
+		super.onPause();
+	}
+	
+	
+	
 }

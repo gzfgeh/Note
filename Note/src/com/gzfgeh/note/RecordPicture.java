@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.gzfgeh.data.OperationSQLiteItem;
 import com.gzfgeh.service.BaseTitleBar;
 
 import android.annotation.SuppressLint;
@@ -17,6 +18,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 public class RecordPicture extends BaseTitleBar {
 	private static final String PHOTO = "photo";
@@ -26,6 +29,9 @@ public class RecordPicture extends BaseTitleBar {
 	
 	private File file;
 	private static final String CONTENT = "图片文件";
+	private ImageView picture;
+	private EditText pictureText;
+	private int oldID;
 	
 	@SuppressLint({ "SimpleDateFormat", "NewApi" })
 	@Override
@@ -57,12 +63,27 @@ public class RecordPicture extends BaseTitleBar {
 		setFile(file);
 		setContent(CONTENT);
 		setTitle("拍照");
-	}
-	
-	public void onClick(View view){
-		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //调用照相机
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-		startActivityForResult(intent, RESULT); 
+		
+		picture = (ImageView) findViewById(R.id.pic);
+		pictureText = (EditText) findViewById(R.id.pic_text);
+		
+		Intent i = getIntent();
+		oldID = i.getIntExtra("ItemID", -1);
+		if (oldID != -1){
+			if (file != null)
+				file.delete();
+			
+			OperationSQLiteItem operationSQLiteItem = new OperationSQLiteItem(this);
+			final String path = operationSQLiteItem.queryContentUri(oldID);
+			String[] pathSplit = path.split("/");
+			String fileName = pathSplit[pathSplit.length - 1];
+			getImage(fileName);
+		}else{
+			Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //调用照相机
+			intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+			startActivityForResult(intent, RESULT);
+		}
+		
 	}
 	
 	@Override
@@ -70,22 +91,25 @@ public class RecordPicture extends BaseTitleBar {
 		// TODO Auto-generated method stub
 		if (resultCode == RESULT_OK){
 			if (requestCode == RESULT){
-				//getImage(file.getAbsolutePath());
+				getImage(file.getAbsolutePath());
 				displayRightBtn();
-				displayStatusView();
 			}
+		}else{
+			if (file != null)
+				file.delete();
+			finish();
 		}
+		
 		super.onActivityResult(requestCode, resultCode, data);  
 	}
 	
-	@SuppressWarnings("unused")
 	private void getImage(String absolutePath) {
 		// TODO Auto-generated method stub
 		Bitmap bitmap;  
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		
-		int maxH = 200;
+		int maxH = 400;
 		BitmapFactory.Options options = new BitmapFactory.Options();  
 		options.inJustDecodeBounds = true;
 		// 获取这个图片的宽和高  
@@ -94,16 +118,19 @@ public class RecordPicture extends BaseTitleBar {
 		int be = (int)(options.outHeight / (float)maxH);  
 		int ys = options.outHeight % maxH;//求余数  
 		float fe = ys / (float)maxH;  
-		if(fe>=0.5)be = be + 1;  
+		if(fe>=0.5)
+			be = be + 1;  
+		
 		if (be <= 0)  
-		be = 1;  
+			be = 1;  
 		options.inSampleSize = be;  
 		    
 		 //重新读入图片，注意这次要把options.inJustDecodeBounds 设为 false  
 		options.inJustDecodeBounds = false;  
 		bitmap=BitmapFactory.decodeFile(absolutePath,options);  
-//		picture.setImageBitmap(bitmap);  
-//		picture.setVisibility(View.VISIBLE);
+		picture.setImageBitmap(bitmap);  
+		picture.setVisibility(View.VISIBLE);
+		pictureText.setVisibility(View.VISIBLE);
 	}
 	
 }

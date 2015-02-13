@@ -182,7 +182,7 @@ import android.widget.Toast;
 				// TODO Auto-generated method stub
 				TextView itemId = (TextView) view.findViewById(R.id.item_id);
 				int num = Integer.valueOf(itemId.getText().toString());
-				Intent intent = new Intent(Display.this, RecordText.class);
+				Intent intent = new Intent(Display.this, RecordPicture.class);
 				intent.putExtra("ItemID", num);
 				startActivity(intent);
 			}
@@ -199,7 +199,7 @@ import android.widget.Toast;
 				// TODO Auto-generated method stub
 				TextView itemId = (TextView) view.findViewById(R.id.item_id);
 				int num = Integer.valueOf(itemId.getText().toString());
-				Intent intent = new Intent(Display.this, RecordText.class);
+				Intent intent = new Intent(Display.this, RecordVideos.class);
 				intent.putExtra("ItemID", num);
 				startActivity(intent);
 			}
@@ -483,8 +483,10 @@ import android.widget.Toast;
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		operationSQLiteItem.reflashListView(listViewText, 0);
-		operationSQLiteItem.reflashListView(listViewVoice,1);
+		operationSQLiteItem.reflashListView(listViewText, TAB);
+		operationSQLiteItem.reflashListView(listViewVoice,TAB+1);
+		operationSQLiteItem.reflashListView(listViewPhoto,TAB+2);
+		operationSQLiteItem.reflashListView(listViewVideo,TAB+3);
 	}
 	
 	
